@@ -4,8 +4,11 @@
     if (!$_SESSION['auth']) {
         header('Location: login.php');
     }
+if ($_SESSION['usertype'] != 1) {
+    header('Location: login.php');
+}
 
-    include('config/db_connect.php');
+    include('/home/ejzawada/config/db_connect.php');
 
     if(isset($_GET['delete_id'])){
         $restaurant_id = $_GET['delete_id'];

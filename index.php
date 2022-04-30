@@ -5,25 +5,214 @@ if (!$_SESSION['auth']) {
     header('Location: login.php');
 }
 
-include('config/db_connect.php');
+include('/home/ejzawada/config/db_connect.php');
 
-// write query for all pizzas
-$sql = 'SELECT * FROM restaurants LEFT JOIN cuisines ON restaurants.cuisine_id = cuisines.cuisine_id 
-LEFT JOIN prices ON restaurants.price_id = prices.price_id ORDER BY restaurant_name';
+$errors = array('filterChecker' => '');
 
-// make query and get result
-$result = mysqli_query($conn, $sql);
+if (!empty($_POST['search'])) {
 
-// fetch the resulting rows as an array
-$restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $search =  $_POST['search'];
 
-// free result from memory
-mysqli_free_result($result);
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE restaurant_name LIKE '%" . $search . "%' ORDER BY restaurant_name";
 
-// close connection
-mysqli_close($conn)
+    $result = mysqli_query($conn, $sql);
+
+    // fetch the resulting rows as an array
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // free result from memory
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_POST['eateryCheck'])) {
+
+    $prices = $_POST['priceCheck'];
+
+    $cuisines = $_POST['cuisineCheck'];
+
+    $eatery = $_POST['eateryCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.cuisine_id IN  ('" . implode("','", $cuisines) . "')) 
+        AND (restaurants.price_id IN ('" . implode("','", $prices) . "'))
+        AND (restaurants.eatery_id IN ('" . implode("','", $eatery) . "'))  ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
 
 
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck'])) {
+
+    $prices = $_POST['priceCheck'];
+
+    $cuisines = $_POST['cuisineCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.cuisine_id IN  ('" . implode("','", $cuisines) . "')) 
+        AND (restaurants.price_id IN ('" . implode("','", $prices) . "')) ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['cuisineCheck']) && !empty($_POST['eateryCheck'])) {
+
+    $cuisines = $_POST['cuisineCheck'];
+
+    $eatery = $_POST['eateryCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.cuisine_id IN  ('" . implode("','", $cuisines) . "'))
+        AND (restaurants.eatery_id IN ('" . implode("','", $eatery) . "'))  ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['priceCheck']) && !empty($_POST['eateryCheck'])) {
+
+    $prices = $_POST['priceCheck'];
+
+    $eatery = $_POST['eateryCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.price_id IN ('" . implode("','", $prices) . "'))
+        AND (restaurants.eatery_id IN ('" . implode("','", $eatery) . "'))  ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['cuisineCheck'])) {
+
+    $cuisines = $_POST['cuisineCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.cuisine_id IN  ('" . implode("','", $cuisines) . "')) ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['priceCheck'])) {
+
+    $prices = $_POST['priceCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.price_id IN ('" . implode("','", $prices) . "')) ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (!empty($_POST['eateryCheck'])) {
+
+    $eatery = $_POST['eateryCheck'];
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id)
+        WHERE (restaurants.eatery_id IN ('" . implode("','", $eatery) . "'))  ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} elseif (isset($_POST['submit'])) {
+    if (empty($_POST['cuisineCheck'])) {
+        $errors['filterChecker'] = 'Please select at least one <br/>';
+    }
+
+    if (empty($_POST['priceCheck'])) {
+        $errors['filterChecker'] = 'Please select at least one <br/>';
+    }
+
+    if (empty($_POST['eateryCheck'])) {
+        $errors['filterChecker'] = 'Please select at least one <br/>';
+    }
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id) ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+    // fetch the resulting rows as an array
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // free result from memory
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+} else {
+
+
+    $sql = "SELECT * FROM restaurants LEFT JOIN cuisines ON (restaurants.cuisine_id = cuisines.cuisine_id)
+        LEFT JOIN prices ON (restaurants.price_id = prices.price_id) LEFT JOIN eaterytype ON (restaurants.eatery_id = eaterytype.eatery_id) ORDER BY restaurant_name";
+
+    // make query and get result
+    $result = mysqli_query($conn, $sql);
+
+    // fetch the resulting rows as an array
+    $restaurants = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // free result from memory
+    mysqli_free_result($result);
+
+    // close connection
+    mysqli_close($conn);
+}
 
 ?>
 
@@ -31,19 +220,224 @@ mysqli_close($conn)
 <html lang="en">
 
 <?php include('templates/header.php'); ?>
+<br>
 
-<h4 class="center-align grey-text">Restaurants!</h4>
+
+<!-- Modal Structure -->
+<div id="modal" class="modal modal-fixed-footer grey lighten-4">
+    <div class="modal-content">
+        <form method="post" action="index.php">
+
+            <div class="row">
+                <div class="col s12 md4 l4">
+                    <div class="card z-depth-0">
+                        <div class="card-content">
+                            <h6 class="center grey-text">Cuisines</h6>
+                            <hr>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in checkbox-brown" onclick="checkAllCuisine(this)" />
+                                    <span>All Cuisines</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="1" name="cuisineCheck[]" <?php if (in_array("1", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Asian</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="14" name="cuisineCheck[]" <?php if (in_array("14", $cuisines)) echo "checked='checked'"; ?>class="filled-in checkbox-brown" />
+                                    <span>Barbecue</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="6" name="cuisineCheck[]" <?php if (in_array("6", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Breakfast</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="11" name="cuisineCheck[]" <?php if (in_array("11", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Burgers and Fries</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="7" name="cuisineCheck[]" <?php if (in_array("7", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Cajun</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="16" name="cuisineCheck[]" <?php if (in_array("7", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Fine Dining</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="13" name="cuisineCheck[]" <?php if (in_array("13", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Fried Chicken</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="2" name="cuisineCheck[]" <?php if (in_array("2", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Greek</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="10" name="cuisineCheck[]" <?php if (in_array("10", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Hawaiian</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="9" name="cuisineCheck[]" <?php if (in_array("9", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Indian</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="4" name="cuisineCheck[]" <?php if (in_array("4", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Italian</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="5" name="cuisineCheck[]" <?php if (in_array("5", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Mexican</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="8" name="cuisineCheck[]" <?php if (in_array("8", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Pizza</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="15" name="cuisineCheck[]" <?php if (in_array("8", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Sandwiches</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="12" name="cuisineCheck[]" <?php if (in_array("12", $cuisines)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Seafood</span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 md4 l4">
+                    <div class="card z-depth-0">
+                        <div class="card-content">
+                            <h6 class="center grey-text">Price Range</h6>
+                            <hr>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in checkbox-brown" onclick="priceCheckAll(this)" />
+                                    <span>All Price Ranges</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="1" name="priceCheck[]" <?php if (in_array("1", $prices)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Under $10</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="2" name="priceCheck[]" <?php if (in_array("2", $prices)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>$10-$20</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="3" name="priceCheck[]" <?php if (in_array("3", $prices)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>$20 or More</span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 md4 l4">
+                    <div class="card z-depth-0">
+                        <div class="card-content">
+                            <h6 class="center grey-text">Restaurant or Fast Food</h6>
+                            <hr>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in checkbox-brown" onclick="eateryCheckAll(this)" />
+                                    <span>Any Type</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="1" name="eateryCheck[]" <?php if (in_array("1", $eatery)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Restaurant</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="2" name="eateryCheck[]" <?php if (in_array("2", $eatery)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>Fast Food</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" value="3" name="eateryCheck[]" <?php if (in_array("3", $eatery)) echo "checked='checked'"; ?> class="filled-in checkbox-brown" />
+                                    <span>CarryOut</span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <div class="modal-footer">
+        <input type="button" value="Close" class="btn brand closeBtn z-depth-0 modal-action modal-close" name="closeModal" id="closeModal">
+        <input type="submit" value="Apply" class="btn brand z-depth-0" name="submit">
+    </div>
+    </form>
+</div>
 
 
 <div class="container">
+    <div class="row">
 
+        <div class="red-text"><?php echo $errors['filterChecker']; ?></div>
+        <div class="col s4 md6 l6">
+
+            <h4 class="left-align left grey-text">Filters <button data-target="modal" class="btn brand z-depth-0 modal-trigger"><i class="material-icons">arrow_drop_down</i></button></h4>
+        </div>
+        <div class="col s8 md6 l6 right">
+            <div class="card">
+                <div class="nav-wrapper searchBar">
+                    <form method="post" action="index.php">
+                        <div class="input-field">
+                            <input id="search" name="search" type="search" placeholder="Find Restaurant" autocomplete="off" required>
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <?php foreach ($restaurants as $restaurant) : ?>
-            <div class="col s6 md3">
+            <div class="center col s12 md6 l6">
                 <div class="card z-depth-0">
                     <div class="card-content center">
-                        <h5><?php echo htmlspecialchars($restaurant['restaurant_name']); ?></h5>
+                        <h5 class="center-align center"><?php echo htmlspecialchars($restaurant['restaurant_name']); ?></h5>
+                        <p class="brand-text topRight"><?php echo htmlspecialchars($restaurant['eatery_name']); ?></p>
                         <hr>
                         <div>
                             <ul class="container">
@@ -60,8 +454,7 @@ mysqli_close($conn)
                         </div>
                     </div>
                     <div class="card-action right-align">
-                        <a href="<?php echo $restaurant['website_link'] ?>" class="brand-text" target="_blank" style="target-new: tab;">More Info</a>
-                        <div class="left brand-text"><i class="material-icons left">favorite_border</i>Favorite</div>
+                        <a href="<?php echo htmlspecialchars($restaurant['website_link']) ?>" class="brand-text" target="_blank" style="target-new: tab;">More Info</a>
                     </div>
                 </div>
             </div>

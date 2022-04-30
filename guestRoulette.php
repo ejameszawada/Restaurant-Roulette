@@ -5,7 +5,7 @@ if (!$_SESSION['auth']) {
     header('Location: login.php');
 }
 
-if ($_SESSION['usertype'] == 2) {
+if ($_SESSION['usertype'] != 2) {
     header('Location: login.php');
 }
 
@@ -45,7 +45,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -80,16 +80,11 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
                 </div>
             </div>
             <div class="row container center">
-            <div class="col s6">
+            <div class="col s12">
                 <div>
                     <button onclick="spinAgain()" class="btn brand z-depth-0" name="spin-again">Spin Again!</button>
                 </div>
             </div>
-                <div class="col s6">
-                    <div>
-                        <button class="btn green lighten-1 z-depth-0"><a class="white-text" href="insertRecent.php?get_id=' . $restaurant_id . '">Let\'s Eat!</a></button>
-                    </div>
-                </div>
             </div>
             
             ';
@@ -122,7 +117,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -199,7 +194,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -276,7 +271,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -350,7 +345,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -424,7 +419,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -498,7 +493,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
             $website_link = $row['website_link'];
             echo '
             <div class="container">
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -574,7 +569,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
 
     echo '<div class="container">
     
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -602,7 +597,7 @@ if (!empty($_POST['cuisineCheck']) && !empty($_POST['priceCheck']) && !empty($_P
 
     echo '<div class="container">
     
-            <h4 id="ready" class="center grey-text">Ready to eat, ' . $_SESSION['username'] . '?</h4>
+            <h4 id="ready" class="center grey-text">Ready to eat, Guest?</h4>
             <div class="row">
         <div class="red-text">' . $errors['filterChecker'] . '</div>
         <div class="col s6">
@@ -639,7 +634,7 @@ mysqli_close($conn);
 <!-- Modal Structure -->
 <div id="modal" class="modal modal-fixed-footer grey lighten-4">
     <div class="modal-content">
-        <form method="post" action="roulette.php">
+        <form method="post" action="guestRoulette.php">
 
             <div class="row">
                 <div class="col s12 md4 l4">
@@ -821,6 +816,7 @@ mysqli_close($conn);
 </div>
 
 <h4 class="grey-text center <?= $hide ?>">Use the Filters to get a Restaurant at Random!</h4>
+
 
 <?php include('templates/footer.php'); ?>
 
