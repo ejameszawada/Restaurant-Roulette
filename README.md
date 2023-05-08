@@ -6,6 +6,7 @@ This website was created as my senior project at the University of Mississippi. 
 
 # Hosting
 Website is hosted at https://turing.cs.olemiss.edu/~ejzawada/Restaurant%20Roulette/login.php
+The database has since been depracated due to the fact I no longer have access to the University's database.
 
 # Login Page
 ![image](https://user-images.githubusercontent.com/92044966/206395743-35f48937-1896-4038-aa89-edf056dd9d84.png)
